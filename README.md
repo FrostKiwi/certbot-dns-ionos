@@ -1,6 +1,6 @@
 # certbot-dns-ionos
 These are authentication and cleanup scripts for certbot's --manual-auth-hook and --manual-cleanup-hook to automate cert creation with the [IONOS DNS API](https://developer.hosting.ionos.com/docs).
-These scripts are created accoring to the [BETA DNS API](https://developer.hosting.ionos.com/docs/dns) docs from the 25.12.20
+These scripts are created accoring to the [BETA DNS API](https://developer.hosting.ionos.com/docs/dns) docs from the 25.12.20.
 By default the authentication scripts waits for 30s to ensure DNS propagation. This can be disabled with "-d 0".
 
 Please note: Just to be sure, the authentication script does not temp-save the API keys. That's why you have to invoke the cleanup script with the API keys again.
