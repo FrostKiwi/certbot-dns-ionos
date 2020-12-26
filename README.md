@@ -6,6 +6,22 @@ By default the authentication scripts waits for 30s to ensure DNS propagation. T
 Please note: Just to be sure, the authentication script does not temp-save the API keys. That's why you have to invoke the cleanup script with the API keys again.
 
 More details and usage information is provided by invoking either of the scripts with -h
+## Dependencies
+Both scripts use [jq](https://github.com/stedolan/jq) and [curl](https://github.com/curl/curl) to manage the API calls.
+#### FreeBSD:
+```
+# pkg install jq curl
+```
+#### ArchLinux:
+
+```
+# pacman -S jq curl
+```
+#### Ubuntu:
+
+```
+# apt-get install jq curl
+```
 
 ## Usage Output with -h
 ```
