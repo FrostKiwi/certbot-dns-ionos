@@ -30,6 +30,10 @@ do
     esac
 done
 
+# Remove *.
+# Wildcard handling is indentical
+CERTBOT_DOMAIN_NOSTAR=$(echo $CERTBOT_DOMAIN | awk '{gsub("\\*\\.", "");print}')
+
 # Check for Secret Key
 if [ -z "$SECRET" ]
     then
@@ -47,10 +51,10 @@ fi
 if [ -z "$QUIET" ]
     then
 	echo Getting Zone-ID
-	ZONE_ID=$(curl -s -X GET "https://api.hosting.ionos.com/dns/v1/zones/" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" | jq -r ".[]|select(.name==\"$CERTBOT_DOMAIN\")|.id")
+	ZONE_ID=$(curl -s -X GET "https://api.hosting.ionos.com/dns/v1/zones/" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" | jq -r ".[]|select(.name==\"$CERTBOT_DOMAIN_NOSTAR\")|.id")
 	echo -e "ZoneID: \033[0;32m$ZONE_ID\033[0m"
     else
-	ZONE_ID=$(curl -s -X GET "https://api.hosting.ionos.com/dns/v1/zones/" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" | jq -r ".[]|select(.name==\"$CERTBOT_DOMAIN\")|.id")
+	ZONE_ID=$(curl -s -X GET "https://api.hosting.ionos.com/dns/v1/zones/" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" | jq -r ".[]|select(.name==\"$CERTBOT_DOMAIN_NOSTAR\")|.id")
 fi
 
 # Get List of records
@@ -67,10 +71,10 @@ fi
 if [ -z "$QUIET" ]
     then
 	echo Record to be removed
-	echo $RECORDS | jq -r ".records|.[]|select(.name==\"_acme-challenge.$CERTBOT_DOMAIN\")"
+	echo $RECORDS | jq -r ".records|.[]|select(.name==\"_acme-challenge.$CERTBOT_DOMAIN_NOSTAR\")"
 fi
 
-REMOVE_ID=$(echo $RECORDS | jq -r ".records|.[]|select(.name==\"_acme-challenge.$CERTBOT_DOMAIN\")|.id")
+REMOVE_ID=$(echo $RECORDS | jq -r ".records|.[]|select(.name==\"_acme-challenge.$CERTBOT_DOMAIN_NOSTAR\")|.id")
 
 if [ -z "$QUIET" ]
     then

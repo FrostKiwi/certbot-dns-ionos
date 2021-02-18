@@ -35,6 +35,10 @@ do
     esac
 done
 
+# Remove *.                         
+# Wildcard handling is indentical
+CERTBOT_DOMAIN_NOSTAR=$(echo $CERTBOT_DOMAIN | awk '{gsub("\\*\\.", "");print}')
+
 # Check for Secret Key
 if [ -z "$SECRET" ]
     then
@@ -49,13 +53,14 @@ if [ -z "$PUBLIC_PREFIX" ]
 fi
 
 # Get Domain-Zone ID
+curl -s -X GET "https://api.hosting.ionos.com/dns/v1/zones/" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" | jq
 if [ -z "$QUIET" ]
     then
 	echo Getting Zone-ID
-	ZONE_ID=$(curl -s -X GET "https://api.hosting.ionos.com/dns/v1/zones/" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" | jq -r ".[]|select(.name==\"$CERTBOT_DOMAIN\")|.id")
+	ZONE_ID=$(curl -s -X GET "https://api.hosting.ionos.com/dns/v1/zones/" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" | jq -r ".[]|select(.name==\"$CERTBOT_DOMAIN_NOSTAR\")|.id")
 	echo -e "ZoneID: \033[0;32m$ZONE_ID\033[0m"
     else
-	ZONE_ID=$(curl -s -X GET "https://api.hosting.ionos.com/dns/v1/zones/" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" | jq -r ".[]|select(.name==\"$CERTBOT_DOMAIN\")|.id")
+	ZONE_ID=$(curl -s -X GET "https://api.hosting.ionos.com/dns/v1/zones/" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" | jq -r ".[]|select(.name==\"$CERTBOT_DOMAIN_NOSTAR\")|.id")
 fi
 
 # Get List of records
@@ -69,11 +74,11 @@ if [ -z "$QUIET" ]
 fi
 
 # Add challenge to the record list
-RECORDS=$(echo $RECORDS | jq -c ".records[.records|length] |= . + {\"name\":\"_acme-challenge.$CERTBOT_DOMAIN\",\"type\":\"TXT\",\"content\":\"$CERTBOT_VALIDATION\"}")
+RECORDS=$(echo $RECORDS | jq -c ".records[.records|length] |= . + {\"name\":\"_acme-challenge.$CERTBOT_DOMAIN_NOSTAR\",\"type\":\"TXT\",\"content\":\"$CERTBOT_VALIDATION\"}")
 if [ -z "$QUIET" ]
     then
 	echo New record
-	echo $RECORDS | jq -r ".records|.[]|select(.name==\"_acme-challenge.$CERTBOT_DOMAIN\")"
+	echo $RECORDS | jq -r ".records|.[]|select(.name==\"_acme-challenge.$CERTBOT_DOMAIN_NOSTAR\")"
 fi
 
 # PUT List of records

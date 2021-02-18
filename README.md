@@ -1,5 +1,7 @@
 # certbot-dns-ionos
 todo: Subdomain handeling for non-wildcard certs
+todo: Fix cleanup with multiple domain names
+~~todo: Add wildcard cert support~~
 
 These are authentication and cleanup scripts for [certbot's](https://github.com/certbot/certbot) --manual-auth-hook and --manual-cleanup-hook to automate cert creation with the [IONOS DNS API](https://developer.hosting.ionos.com/docs).
 These scripts are created accoring to the [BETA DNS API](https://developer.hosting.ionos.com/docs/dns) docs from the 25.12.20.
