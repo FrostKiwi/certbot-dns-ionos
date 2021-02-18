@@ -21,8 +21,8 @@ help_msg()
     exit 2
 }
 
-# Default 30s sleep for DNS propagation
-SLEEP_TIME=30
+# Default 60s sleep for DNS propagation
+SLEEP_TIME=60
 
 while getopts d:p:s:qh flag
 do
@@ -80,9 +80,9 @@ fi
 if [ -z "$QUIET" ]
     then
 	echo Setting new records
-	curl -s -X PUT "https://api.hosting.ionos.com/dns/v1/zones/$ZONE_ID" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" -d $(echo $RECORDS | jq -c ".records")
+	curl -s -X PUT "https://api.hosting.ionos.com/dns/v1/zones/$ZONE_ID" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" -d "$(echo $RECORDS | jq -M -c ".records")"
     else
-	curl -s -X PUT "https://api.hosting.ionos.com/dns/v1/zones/$ZONE_ID" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" -d $(echo $RECORDS | jq -c ".records")
+	curl -s -X PUT "https://api.hosting.ionos.com/dns/v1/zones/$ZONE_ID" -H "X-API-Key: $PUBLIC_PREFIX.$SECRET" -H "accept: */*" -H "Content-Type: application/json" -d "$(echo $RECORDS | jq -M -c ".records")"
 fi
 # Wait, just in case DNS propagation takes time
 sleep $SLEEP_TIME
