@@ -4,7 +4,7 @@ todo: Fix cleanup with multiple domain names<br>
 ~~todo: Add wildcard cert support~~
 
 These are authentication and cleanup scripts for [certbot's](https://github.com/certbot/certbot) --manual-auth-hook and --manual-cleanup-hook to automate cert creation with the [IONOS DNS API](https://developer.hosting.ionos.com/docs).
-These scripts are created accoring to the [BETA DNS API](https://developer.hosting.ionos.com/docs/dns) docs from the 2021-02-18.
+These scripts are created according to the [BETA DNS API](https://developer.hosting.ionos.com/docs/dns) docs from the 2021-02-18.
 By default the authentication scripts waits for 60s to ensure DNS propagation. This can be disabled with "-d 0".
 
 Please note: Just to be sure, the authentication script does not temp-save the API keys for use in the clean-up script. That's why you have to invoke the cleanup script with the API keys again.
