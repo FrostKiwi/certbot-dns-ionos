@@ -1,4 +1,5 @@
 # certbot-dns-ionos
+todo: Now the IONOS' DNS API is out of Beta and it seems you can finally delete specific records, instead of sending the list for a complete zone, so I will rework this script to do that. Should make the scripts more reliable.
 todo: Subdomain handeling for non-wildcard certs<br>
 todo: Fix cleanup with multiple domain names<br>
 ~~todo: Add wildcard cert support~~
